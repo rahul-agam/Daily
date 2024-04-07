@@ -44,7 +44,7 @@ export const signup = async (req, res, next) => {
     console.log("Trying to save the user details...");
     await newUser.save();
     console.log("Signup successfull");
-    res.status(200).send("signup successful");
+    res.status(200).json({ response: "Sign Up Successful" });
   } catch (error) {
     console.error("ERROR !! Could not save user details in Mongodb");
     next(error);
