@@ -12,7 +12,8 @@ mongoose
     console.log("Mongodb is connected");
   })
   .catch((err) => {
-    console.log(err);
+    console.error("Could Not Connect to MongoDB");
+    console.error(err);
   });
 const app = express();
 
@@ -22,9 +23,23 @@ I mean, we can put some data in request body
 */
 app.use(express.json());
 
-app.listen(5000, () => {
-  console.log("Server is running on port 5000!!!");
+app.listen(3000, () => {
+  console.log("Server started running on port 3000!");
 });
 
 app.use("/api/user", userRoutes);
 app.use("/api/auth", authRoutes);
+
+/*
+  Middleware to handle errors
+*/
+app.use((err, req, res, next) => {
+  const statusCode = err.statusCode || 500;
+  const message = err.message || "Internal Server Error";
+
+  res.status(statusCode).json({
+    success: false,
+    statusCode: statusCode,
+    message: message,
+  });
+});
